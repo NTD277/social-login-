@@ -12,8 +12,10 @@
     "info": "shopify app info"
   },
   "dependencies": {
+    "@material-ui/core": "^4.12.4",
     "@shopify/app": "3.44.1",
-    "@shopify/cli": "3.44.1"
+    "@shopify/cli": "3.44.1",
+    "@shopify/koa-shopify-graphql-proxy": "^7.0.4"
   },
   "author": "dungnt@aht.local"
 }

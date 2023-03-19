@@ -10,11 +10,55 @@ import {
 } from "@shopify/polaris";
 import { TitleBar } from "@shopify/app-bridge-react";
 
+
 import { trophyImage } from "../assets";
 
 import { ProductsCard } from "../components";
 
+import React, { useState } from 'react';
+
+import { Button } from '@shopify/polaris';
+
+import { Switch } from '@material-ui/core';
+
 export default function HomePage() {
+    const [toggleState, setToggleState] = useState(false);
+
+    const handleToggleChange = (event) => {
+        setToggleState(event.target.checked);
+    };
+
+    const [settings, setSettings] = useState({
+        // your default settings values
+      });
+
+      const handleInputChange = (field, value) => {
+        setSettings(prev => ({
+          ...prev,
+          [field]: value,
+        }));
+      };
+
+      const saveSettings = async () => {
+        const response = await fetch('/admin/api/2021-07/shop.json', {
+          method: 'PUT',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            shop: {
+              id: 123456789,
+              settings,
+            },
+          }),
+        });
+
+        if (!response.ok) {
+          console.error(response.statusText);
+        }
+      };
+
+
   return (
     <Page narrowWidth>
       <TitleBar title="App name" primaryAction={null} />
@@ -78,7 +122,12 @@ export default function HomePage() {
           </Card>
         </Layout.Section>
         <Layout.Section>
-          <ProductsCard />
+        <Switch
+            checked={toggleState}
+            onChange={handleToggleChange}
+        />
+        <Button onClick={saveSettings}>Save</Button>
+
         </Layout.Section>
       </Layout>
     </Page>
